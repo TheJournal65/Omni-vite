@@ -1,0 +1,20 @@
+%% Omni-vite — Sequence: Discovery (map & list filtering)
+sequenceDiagram
+  actor U as Verified Student
+  participant W as Web App
+  participant API as Discovery API
+  participant DB as Database
+
+  U->>W: Open dashboard
+  W->>API: GET /events?categories=preferred&lat&lng
+  API->>DB: Query PUBLISHED events in radius, matching categories
+  DB-->>API: Candidate events
+  API-->>W: Events sorted by distance
+  W-->>U: Render map pins + list, both in sync
+
+  U->>W: Toggle "student-run only", search "trivia"
+  W->>API: GET /events?type=STUDENT_RUN&q=trivia
+  API->>DB: Re-query with filters applied
+  DB-->>API: Filtered results
+  API-->>W: Updated, still distance-sorted
+  W-->>U: Map and list update together

@@ -1,0 +1,29 @@
+%% Omni-vite — Sequence: Event creation & the co-sign gate
+sequenceDiagram
+  actor C as Event Creator
+  participant W as Web App
+  participant API as Events API
+  participant DB as Database
+  participant N as Notifications
+  actor I as Invited Student
+
+  C->>W: Fill event details, select exactly 10 invitees
+  W->>API: POST /events
+  API->>DB: Insert Event(status=PENDING_COSIGNS) + 10 CoSignInvitation(PENDING)
+  DB-->>API: OK
+  API->>N: Notify all 10 invitees
+  N-->>I: "Co-sign [Event Title]?"
+  API-->>W: Draft created — not yet on dashboard
+
+  loop for each invitee response
+    I->>W: Open invite, accept or decline
+    W->>API: POST /invitations/:id/respond
+    API->>DB: Update invitation status
+    API->>DB: Count ACCEPTED invitations for event
+    alt count reaches 10
+      API->>DB: Set Event.status = PUBLISHED
+      API->>N: Notify creator — event is live
+    else count below 10
+      API-->>W: Still waiting on co-signs
+    end
+  end

@@ -1,0 +1,25 @@
+%% Omni-vite — Sequence: Sign-up & Onboarding
+sequenceDiagram
+  actor S as Prospective Student
+  participant W as Web App
+  participant API as Auth API
+  participant DB as Database
+
+  S->>W: Enter name, email, password
+  W->>API: POST /signup
+  API->>API: Validate email ends in .edu
+  alt invalid domain
+    API-->>W: 400 — .edu email required
+    W-->>S: Show inline error
+  else valid domain
+    API->>DB: Create User
+    DB-->>API: User created
+    API-->>W: 201 + session token
+    W-->>S: Prompt for college + preferences
+    S->>W: Select college, describe ideal events, pick categories
+    W->>API: PATCH /users/:id/preferences
+    API->>DB: Save college, preferenceDescription, categories
+    DB-->>API: OK
+    API-->>W: 200
+    W-->>S: Enter dashboard, pre-filtered by categories
+  end

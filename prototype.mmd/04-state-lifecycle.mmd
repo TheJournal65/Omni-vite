@@ -1,0 +1,12 @@
+%% Omni-vite — Event Lifecycle / State Diagram
+%% "Expired" is a proposed addition, not in the original spec:
+%% nothing states what happens to a draft that never reaches 10 co-signs.
+stateDiagram-v2
+  [*] --> Draft
+  Draft --> PendingCoSigns : creator submits + invites 10
+  PendingCoSigns --> PendingCoSigns : co-sign accepted (count < 10)
+  PendingCoSigns --> Published : 10th co-sign accepted
+  PendingCoSigns --> Expired : proposed — deadline passes, count < 10
+  Published --> Archived : end time passes
+  Expired --> [*]
+  Archived --> [*]

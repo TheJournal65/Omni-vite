@@ -1,0 +1,19 @@
+%% Omni-vite — Appendix: supporting component sketch (not UML, deployment context)
+flowchart TD
+  Client["Web App<br/>(map view / list view)"]
+  Auth["Auth Service<br/>.edu validation"]
+  Discovery["Discovery Service<br/>search, filter, distance sort"]
+  Events["Events Service<br/>drafts + co-sign gate"]
+  Notify["Notification Service"]
+  Rec["Recommendation Engine<br/>category weighting"]
+  DB[("Database")]
+
+  Client --> Auth
+  Client --> Discovery
+  Client --> Events
+  Auth --> DB
+  Discovery --> DB
+  Discovery --> Rec
+  Events --> DB
+  Events --> Notify
+  Rec --> DB

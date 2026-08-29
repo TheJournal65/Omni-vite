@@ -1,0 +1,37 @@
+%% Omni-vite — Use Case Diagram
+%% Actors: Prospective Student, Verified Student, Event Creator, Invited Co-Signer, Recommendation Engine (system actor)
+flowchart LR
+  subgraph ACT["Actors"]
+    direction TB
+    A1["Prospective Student"]
+    A2["Verified Student"]
+    A3["Event Creator"]
+    A4["Invited Co-Signer"]
+    A5{{"Recommendation Engine"}}
+  end
+
+  subgraph SYS["Omni-vite Platform"]
+    direction TB
+    UC1(("Sign up with<br/>.edu email"))
+    UC2(("Select college &amp;<br/>describe ideal events"))
+    UC3(("Browse dashboard<br/>(map / list)"))
+    UC4(("Search events"))
+    UC5(("Filter by distance,<br/>category, run-type"))
+    UC6(("View event details"))
+    UC7(("Create event draft"))
+    UC8(("Invite 10 co-signers"))
+    UC9(("Accept / decline<br/>co-sign request"))
+    UC10(("Publish event<br/>at 10 accepts"))
+    UC11(("Personalize default<br/>category filter"))
+  end
+
+  A1 --> UC1 --> UC2
+  A2 --> UC3
+  A2 --> UC4
+  A2 --> UC5
+  UC3 --> UC6
+  A3 --> UC7 --> UC8
+  A4 --> UC9
+  UC9 -. 10th accept .-> UC10
+  A5 --> UC11
+  UC11 -.-> UC3

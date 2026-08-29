@@ -1,0 +1,81 @@
+%% Omni-vite — Domain Model / Class Diagram
+%% preferenceDescription is kept verbatim on User for future NLP matching,
+%% while Category drives today's fixed-category filtering.
+classDiagram
+  class User {
+    +UUID id
+    +String fullName
+    +String eduEmail
+    +String preferenceDescription
+    +GeoPoint homeLocation
+    +signUp()
+    +updatePreferences()
+  }
+
+  class College {
+    +UUID id
+    +String name
+    +GeoBoundary campusBoundary
+  }
+
+  class Category {
+    +UUID id
+    +String label
+  }
+
+  class Event {
+    +UUID id
+    +String title
+    +String description
+    +GeoPoint location
+    +String buildingName
+    +DateTime startTime
+    +DateTime endTime
+    +EventType type
+    +EventStatus status
+    +int requiredCoSigns = 10
+    +createDraft()
+    +currentCoSignCount() int
+    +publishIfReady()
+    +distanceFrom(GeoPoint) Number
+  }
+
+  class CoSignInvitation {
+    +UUID id
+    +DateTime invitedAt
+    +DateTime respondedAt
+    +InvitationStatus status
+    +accept()
+    +decline()
+  }
+
+  class EventType {
+    <<enumeration>>
+    COLLEGE_RUN
+    STUDENT_RUN
+  }
+
+  class EventStatus {
+    <<enumeration>>
+    PENDING_COSIGNS
+    PUBLISHED
+    EXPIRED
+  }
+
+  class InvitationStatus {
+    <<enumeration>>
+    PENDING
+    ACCEPTED
+    DECLINED
+  }
+
+  College "1" --> "0..*" User : enrolls
+  College "0..1" --> "0..*" Event : hosts
+  User "1" --> "0..*" Event : creates
+  User "0..*" --> "0..*" Category : prefers
+  Event "0..*" --> "1..*" Category : tagged with
+  Event "1" --> "10" CoSignInvitation : requires
+  User "1" --> "0..*" CoSignInvitation : receives
+  Event --> EventType
+  Event --> EventStatus
+  CoSignInvitation --> InvitationStatus
