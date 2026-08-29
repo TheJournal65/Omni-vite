@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { ALL_CATEGORIES } from '../data/initialData';
 import { EventCategory } from '../types';
-import { 
-  X, 
-  User, 
-  GraduationCap, 
-  Sparkles, 
-  MapPin, 
-  ShieldCheck, 
-  Check, 
-  AlertCircle
+import {
+  X,
+  User,
+  GraduationCap,
+  Sparkles,
+  MapPin,
+  ShieldCheck,
+  Check,
+  AlertCircle,
+  RotateCcw
 } from 'lucide-react';
 
 const COLLEGES_LIST = [
@@ -22,7 +23,7 @@ const COLLEGES_LIST = [
 ];
 
 export const UserProfileModal: React.FC = () => {
-  const { isProfileModalOpen, setIsProfileModalOpen, user, setUser, buildings } = useApp();
+  const { isProfileModalOpen, setIsProfileModalOpen, user, setUser, buildings, resetDemoData } = useApp();
 
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -66,6 +67,13 @@ export const UserProfileModal: React.FC = () => {
     });
 
     setIsProfileModalOpen(false);
+  };
+
+  const handleResetDemoData = () => {
+    if (window.confirm('Reset all demo data back to the seed defaults? This discards any events you created or co-signed and any profile edits.')) {
+      resetDemoData();
+      setIsProfileModalOpen(false);
+    }
   };
 
   return (
@@ -224,7 +232,18 @@ export const UserProfileModal: React.FC = () => {
           </div>
 
           {/* Footer Save */}
-          <div className="pt-4 border-t border-zinc-800 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-zinc-800 flex items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={handleResetDemoData}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 text-xs font-semibold transition-all"
+              title="Wipe saved demo state and reload the seed data from initialData.ts"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Reset Demo Data</span>
+            </button>
+
+            <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setIsProfileModalOpen(false)}
@@ -239,6 +258,7 @@ export const UserProfileModal: React.FC = () => {
               <Check className="w-4 h-4" />
               <span>Save Profile</span>
             </button>
+            </div>
           </div>
 
         </form>

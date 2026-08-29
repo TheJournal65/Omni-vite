@@ -47,6 +47,7 @@ interface AppContextType {
   // Actions
   createEvent: (newEvent: Omit<CampusEvent, 'id' | 'createdAt' | 'cosignersCount' | 'distanceMiles' | 'isPublished'>) => void;
   cosignEvent: (eventId: string) => void;
+  resetDemoData: () => void;
   selectedBuildingForMapFocus: CampusBuilding | null;
   setSelectedBuildingForMapFocus: (b: CampusBuilding | null) => void;
   
@@ -157,6 +158,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
+  // Wipes the persisted demo state so the next load reads fresh from initialData.ts
+  const resetDemoData = () => {
+    localStorage.removeItem('omnivite_user');
+    localStorage.removeItem('omnivite_events');
+    setUser(INITIAL_USER);
+    setEvents(INITIAL_EVENTS);
+  };
+
   // Compute live distances relative to user
   const eventsWithLiveDistance = events.map(ev => ({
     ...ev,
@@ -248,6 +257,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setActiveCosignModalEvent,
         createEvent,
         cosignEvent,
+        resetDemoData,
         selectedBuildingForMapFocus,
         setSelectedBuildingForMapFocus,
         filteredEvents,

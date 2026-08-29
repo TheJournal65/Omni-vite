@@ -155,7 +155,7 @@ export const INITIAL_EVENTS: CampusEvent[] = [
     dateTime: 'Saturday @ 8:00 PM',
     category: 'Gaming & Chill',
     tags: ['Gaming', 'Nintendo', 'Smash Bros', 'Snacks'],
-    cosignersCount: 1,
+    cosignersCount: 3,
     cosignersGoal: 10,
     isPublished: true,
     coverImage: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80',
