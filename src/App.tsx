@@ -24,7 +24,7 @@ const DashboardContent: React.FC = () => {
       {/* Footer / Demo Notes */}
       <footer className="bg-zinc-900/80 border-t border-zinc-800 text-xs py-3 px-4 text-zinc-400">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 sm:justify-start">
             <span className="font-semibold text-zinc-300">Omni-vite</span>
             <span>•</span>
             <span className="flex items-center gap-1 text-red-400 font-medium">
@@ -34,7 +34,7 @@ const DashboardContent: React.FC = () => {
             <span>Campus: <strong className="text-zinc-200">{user.college}</strong></span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:justify-end">
             <span className="text-[11px] text-zinc-400">
               Showing {filteredEvents.length} events near {user.currentLocationName}
             </span>
@@ -61,4 +61,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-

@@ -117,7 +117,7 @@ export const MapView: React.FC = () => {
   } = useApp();
 
   return (
-    <div className="relative w-full flex-1 min-h-[500px] overflow-hidden bg-zinc-950 flex flex-col">
+    <div className="relative w-full flex-1 min-h-[360px] sm:min-h-[500px] overflow-hidden bg-zinc-950 flex flex-col">
 
       {/* Interactive Leaflet Map */}
       <div className="w-full flex-1 min-h-0 relative z-10 flex flex-col">
@@ -169,7 +169,7 @@ export const MapView: React.FC = () => {
               icon={createEventIcon(event)}
             >
               <Popup>
-                <div className="p-4 w-[280px] sm:w-[320px]">
+                <div className="p-3 sm:p-4 w-[calc(100vw-64px)] max-w-[280px] sm:w-[320px] sm:max-w-none">
                   
                   {/* Category & Distance Header */}
                   <div className="flex items-center justify-between gap-2 mb-2">
@@ -262,7 +262,7 @@ export const MapView: React.FC = () => {
         </MapContainer>
 
         {/* Floating Quick Campus Building Selector */}
-        <div className="absolute top-4 left-4 z-[400] max-w-xs hidden sm:block bg-zinc-900/40 backdrop-blur-md p-2 rounded-2xl border border-zinc-800/50 shadow-lg">
+        <div className="absolute top-4 left-4 z-[400] max-w-xs hidden lg:block bg-zinc-900/40 backdrop-blur-md p-2 rounded-2xl border border-zinc-800/50 shadow-lg">
           <div className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-2 py-1 flex items-center gap-1">
             <Building2 className="w-3 h-3 text-red-400" />
             <span>Danforth Campus Buildings</span>
@@ -285,14 +285,19 @@ export const MapView: React.FC = () => {
         </div>
 
         {/* Floating Filter Bar */}
-        <div className="absolute bottom-4 left-4 z-[450]">
+        <div className="absolute bottom-4 left-4 z-[450] hidden lg:block">
           <FilterBar variant="floating" />
+        </div>
+
+        {/* Compact view switcher for phones and tablets */}
+        <div className="absolute top-3 right-3 z-[450] w-36 lg:hidden">
+          <ViewToggle className="w-full bg-zinc-900/80" />
         </div>
 
       </div>
 
       {/* Floating Sidebar: View Toggle + Nearby Events Preview + Map Legend, each with its own blurred backing */}
-      <div className="absolute top-4 right-4 z-[450] w-56 sm:w-72 md:w-80 max-h-[calc(100%-2rem)] flex flex-col gap-2">
+      <div className="absolute top-4 right-4 z-[450] w-80 max-h-[calc(100%-2rem)] hidden lg:flex flex-col gap-2">
         <ViewToggle className="w-full" />
         <EventPreviewList />
 
@@ -317,4 +322,3 @@ export const MapView: React.FC = () => {
     </div>
   );
 };
-

@@ -12,11 +12,12 @@ import {
   Check,
 } from 'lucide-react';
 
-type FilterBarVariant = 'bar' | 'floating' | 'sidebar';
+type FilterBarVariant = 'bar' | 'floating' | 'sidebar' | 'drawer';
 
 export const FilterBar: React.FC<{ variant?: FilterBarVariant }> = ({ variant = 'bar' }) => {
   const isFloating = variant === 'floating';
-  const isSidebar = variant === 'sidebar';
+  const isDrawer = variant === 'drawer';
+  const isSidebar = variant === 'sidebar' || isDrawer;
   const {
     selectedOrganizerType,
     setSelectedOrganizerType,
@@ -59,7 +60,9 @@ export const FilterBar: React.FC<{ variant?: FilterBarVariant }> = ({ variant = 
 
   // Organizer Type Selector (All vs College-Run vs Student-Run)
   const organizerTabs = (
-    <div className={`flex gap-1.5 p-1 bg-zinc-800/90 rounded-xl border border-zinc-700/80 ${
+    <div className={`flex gap-1.5 p-1 rounded-xl border ${
+      isDrawer ? 'bg-white/[0.06] backdrop-blur-xl border-white/10' : 'bg-zinc-800/90 border-zinc-700/80'
+    } ${
       isSidebar ? 'flex-col w-full' : `items-center overflow-x-auto ${isFloating ? '' : 'w-full sm:w-auto'}`
     }`}>
       <button
@@ -101,7 +104,9 @@ export const FilterBar: React.FC<{ variant?: FilterBarVariant }> = ({ variant = 
 
   // Max Distance Slider
   const radiusControl = (
-    <div className={`flex items-center gap-2 bg-zinc-800/60 px-3 py-1.5 rounded-xl border border-zinc-700/70 ${isSidebar ? 'w-full' : ''}`}>
+    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border ${
+      isDrawer ? 'bg-white/[0.05] backdrop-blur-xl border-white/10' : 'bg-zinc-800/60 border-zinc-700/70'
+    } ${isSidebar ? 'w-full' : ''}`}>
       <MapPin className="w-3.5 h-3.5 text-red-400 shrink-0" />
       <span className="text-zinc-400">Radius:</span>
       <input
@@ -124,7 +129,9 @@ export const FilterBar: React.FC<{ variant?: FilterBarVariant }> = ({ variant = 
     <div className={`relative ${isSidebar ? 'w-full' : ''}`} ref={sortRef}>
       <button
         onClick={() => setIsSortOpen(open => !open)}
-        className={`flex items-center gap-2 bg-zinc-800/60 px-3 py-1.5 rounded-xl border border-zinc-700/70 text-xs whitespace-nowrap transition-all ${isSidebar ? 'w-full justify-between' : ''}`}
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs whitespace-nowrap transition-all ${
+          isDrawer ? 'bg-white/[0.05] backdrop-blur-xl border-white/10' : 'bg-zinc-800/60 border-zinc-700/70'
+        } ${isSidebar ? 'w-full justify-between' : ''}`}
       >
         <span className="flex items-center gap-2 min-w-0">
           <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
@@ -137,8 +144,10 @@ export const FilterBar: React.FC<{ variant?: FilterBarVariant }> = ({ variant = 
       </button>
 
       {isSortOpen && (
-        <div className={`absolute left-0 rounded-xl border border-zinc-700/80 bg-zinc-800 shadow-xl z-30 p-1.5 ${isSidebar ? 'w-full' : 'w-56'} ${
-          isFloating ? 'bottom-full mb-2' : 'top-full mt-2'
+        <div className={`left-0 rounded-xl border shadow-xl z-30 p-1.5 ${
+          isDrawer ? 'border-white/10 bg-zinc-950/35 backdrop-blur-2xl' : 'border-zinc-700/80 bg-zinc-800'
+        } ${isSidebar ? 'w-full' : 'w-56'} ${
+          isDrawer ? 'relative mt-2' : `absolute ${isFloating ? 'bottom-full mb-2' : 'top-full mt-2'}`
         }`}>
           {SORT_OPTIONS.map(opt => (
             <button
@@ -206,8 +215,10 @@ export const FilterBar: React.FC<{ variant?: FilterBarVariant }> = ({ variant = 
         </button>
 
         {isCategoryOpen && (
-          <div className={`absolute left-0 max-h-80 overflow-y-auto rounded-xl border border-zinc-700/80 bg-zinc-800 shadow-xl z-30 p-1.5 ${isSidebar ? 'w-full' : 'w-64'} ${
-            isFloating ? 'bottom-full mb-2' : 'top-full mt-2'
+          <div className={`left-0 max-h-80 overflow-y-auto rounded-xl border shadow-xl z-30 p-1.5 ${
+            isDrawer ? 'border-white/10 bg-zinc-950/35 backdrop-blur-2xl' : 'border-zinc-700/80 bg-zinc-800'
+          } ${isSidebar ? 'w-full' : 'w-64'} ${
+            isDrawer ? 'relative mt-2' : `absolute ${isFloating ? 'bottom-full mb-2' : 'top-full mt-2'}`
           }`}>
             {ALL_CATEGORIES.map(category => {
               const isSelected = selectedCategories.includes(category);
@@ -261,7 +272,11 @@ export const FilterBar: React.FC<{ variant?: FilterBarVariant }> = ({ variant = 
 
   if (isSidebar) {
     return (
-      <div className="w-full lg:w-64 shrink-0 flex flex-col gap-4 pb-6 border-b border-zinc-800 lg:pb-0 lg:border-b-0 lg:border-r lg:pr-6 lg:border-zinc-800 text-xs">
+      <div className={`w-full shrink-0 flex flex-col gap-4 text-xs ${
+        isDrawer
+          ? ''
+          : 'lg:w-64 pb-6 border-b border-zinc-800 lg:pb-0 lg:border-b-0 lg:border-r lg:pr-6 lg:border-zinc-800'
+      }`}>
         {organizerTabs}
         <div className="flex flex-col gap-2">
           {radiusControl}
@@ -287,4 +302,3 @@ export const FilterBar: React.FC<{ variant?: FilterBarVariant }> = ({ variant = 
     </div>
   );
 };
-

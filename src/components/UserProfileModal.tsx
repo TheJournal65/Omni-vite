@@ -77,17 +77,17 @@ export const UserProfileModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-zinc-950/80 backdrop-blur-sm overflow-y-auto">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl sm:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 my-2 sm:my-8">
         
         {/* Header */}
-        <div className="px-6 py-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-800/50">
-          <div className="flex items-center gap-2">
+        <div className="px-4 sm:px-6 py-4 border-b border-zinc-800 flex items-center justify-between gap-2 bg-zinc-800/50">
+          <div className="flex items-center gap-2 min-w-0">
             <div className="w-8 h-8 rounded-xl bg-red-500/20 border border-red-500/40 text-red-400 flex items-center justify-center font-bold">
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-extrabold text-white">Student Profile & AI Preferences</h2>
+              <h2 className="text-sm min-[360px]:text-base sm:text-lg font-extrabold text-white leading-tight">Student Profile & AI Preferences</h2>
               <p className="text-xs text-zinc-400">Personalize your campus event radar</p>
             </div>
           </div>
@@ -100,7 +100,7 @@ export const UserProfileModal: React.FC = () => {
           </button>
         </div>
 
-        <form onSubmit={handleSave} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+        <form onSubmit={handleSave} className="p-4 sm:p-6 space-y-4 max-h-[78dvh] sm:max-h-[75vh] overflow-y-auto">
           
           {/* Name & Email (.edu enforced) */}
           <div className="space-y-3">
@@ -118,7 +118,7 @@ export const UserProfileModal: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+              <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1.5 flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-1">
                 <span>Student Email (.edu required)</span>
                 <span className="text-[10px] text-red-400 font-normal flex items-center gap-1">
                   <ShieldCheck className="w-3 h-3" /> Verified Student Access
@@ -266,4 +266,3 @@ export const UserProfileModal: React.FC = () => {
     </div>
   );
 };
-

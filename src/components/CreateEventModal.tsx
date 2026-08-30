@@ -67,17 +67,17 @@ export const CreateEventModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-zinc-950/80 backdrop-blur-sm overflow-y-auto">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl sm:rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 my-2 sm:my-8">
         
         {/* Modal Header */}
-        <div className="px-6 py-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-800/50">
-          <div className="flex items-center gap-2">
+        <div className="px-4 sm:px-6 py-4 border-b border-zinc-800 flex items-center justify-between gap-2 bg-zinc-800/50">
+          <div className="flex items-center gap-2 min-w-0">
             <div className="w-8 h-8 rounded-xl bg-red-500/20 border border-red-500/40 text-red-400 flex items-center justify-center font-bold">
               <PlusCircle className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-extrabold text-white">Create Campus Event</h2>
+              <h2 className="text-base sm:text-lg font-extrabold text-white">Create Campus Event</h2>
               <p className="text-xs text-zinc-400">Post an event for {user.college}</p>
             </div>
           </div>
@@ -91,14 +91,14 @@ export const CreateEventModal: React.FC = () => {
         </div>
 
         {/* Modal Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 max-h-[78dvh] sm:max-h-[75vh] overflow-y-auto">
           
           {/* Organizer Type Selector */}
           <div>
             <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-2">
               Event Classification
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setOrganizerType('student')}
@@ -281,4 +281,3 @@ export const CreateEventModal: React.FC = () => {
     </div>
   );
 };
-

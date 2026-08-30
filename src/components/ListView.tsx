@@ -31,9 +31,11 @@ export const ListView: React.FC = () => {
   };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6">
+    <div className="px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
       <div className="flex flex-col lg:flex-row items-start gap-6">
-        <FilterBar variant="sidebar" />
+        <div className="hidden lg:block">
+          <FilterBar variant="sidebar" />
+        </div>
 
         <div className="flex-1 min-w-0 w-full">
           <div className="flex items-center justify-between gap-3 mb-5">
@@ -54,7 +56,7 @@ export const ListView: React.FC = () => {
               </p>
             </div>
           ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             {filteredEvents.map(event => {
           const isCollege = event.organizerType === 'college';
           const isPending = !event.isPublished;
@@ -222,4 +224,3 @@ export const ListView: React.FC = () => {
     </div>
   );
 };
-
