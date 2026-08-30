@@ -38,8 +38,6 @@ const DashboardContent: React.FC = () => {
             <span className="text-[11px] text-zinc-400">
               Showing {filteredEvents.length} events near {user.currentLocationName}
             </span>
-            <span className="text-zinc-600">|</span>
-            <span className="font-medium text-zinc-300">WashU Hackathon 2026</span>
           </div>
         </div>
       </footer>

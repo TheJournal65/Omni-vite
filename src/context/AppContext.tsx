@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CampusEvent, CampusBuilding, UserProfile, EventCategory, EventType } from '../types';
-import { INITIAL_EVENTS, INITIAL_USER, WASHU_BUILDINGS } from '../data/initialData';
+import { INITIAL_EVENTS, INITIAL_USER, SEED_VERSION, WASHU_BUILDINGS } from '../data/initialData';
 
 // Haversine formula to compute distance in miles between two coordinates
 export function calculateDistanceMiles(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -15,6 +15,31 @@ export function calculateDistanceMiles(lat1: number, lon1: number, lat2: number,
       Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return Math.round(R * c * 100) / 100;
+}
+
+// The demo state lives in localStorage so it survives reloads, but a store
+// written against an older seed would otherwise hide newly seeded events for
+// good. When the seed version moves we reload the seed and carry over whatever
+// the user created in the app.
+function loadEvents(): CampusEvent[] {
+  const saved = localStorage.getItem('omnivite_events');
+  if (!saved) return INITIAL_EVENTS;
+
+  let stored: CampusEvent[];
+  try {
+    stored = JSON.parse(saved);
+  } catch {
+    return INITIAL_EVENTS;
+  }
+  if (!Array.isArray(stored)) return INITIAL_EVENTS;
+
+  if (Number(localStorage.getItem('omnivite_seed_version')) === SEED_VERSION) {
+    return stored;
+  }
+
+  const seededIds = new Set(INITIAL_EVENTS.map(ev => ev.id));
+  const userCreated = stored.filter(ev => !seededIds.has(ev.id));
+  return [...userCreated, ...INITIAL_EVENTS];
 }
 
 interface AppContextType {
@@ -65,10 +90,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return saved ? JSON.parse(saved) : INITIAL_USER;
   });
 
-  const [events, setEvents] = useState<CampusEvent[]>(() => {
-    const saved = localStorage.getItem('omnivite_events');
-    return saved ? JSON.parse(saved) : INITIAL_EVENTS;
-  });
+  const [events, setEvents] = useState<CampusEvent[]>(loadEvents);
 
   const [buildings] = useState<CampusBuilding[]>(WASHU_BUILDINGS);
   const [activeView, setActiveView] = useState<'map' | 'list'>('map');
@@ -93,6 +115,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     localStorage.setItem('omnivite_events', JSON.stringify(events));
+    localStorage.setItem('omnivite_seed_version', String(SEED_VERSION));
   }, [events]);
 
   const toggleCategory = (cat: EventCategory) => {
@@ -162,6 +185,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const resetDemoData = () => {
     localStorage.removeItem('omnivite_user');
     localStorage.removeItem('omnivite_events');
+    localStorage.removeItem('omnivite_seed_version');
     setUser(INITIAL_USER);
     setEvents(INITIAL_EVENTS);
   };

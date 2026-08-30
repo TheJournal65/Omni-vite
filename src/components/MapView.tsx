@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap } from 'rea
 import L from 'leaflet';
 import { useApp } from '../context/AppContext';
 import { CampusEvent, CampusBuilding } from '../types';
+import { CATEGORY_EMOJI } from '../data/initialData';
 import { FilterBar } from './FilterBar';
 import { EventPreviewList } from './EventPreviewList';
 import { ViewToggle } from './ViewToggle';
@@ -62,6 +63,7 @@ const createBuildingIcon = (buildingName: string) => {
 
 const createEventIcon = (event: CampusEvent) => {
   const isCollege = event.organizerType === 'college';
+  // Pin fill still carries college vs student; the emoji carries the category.
   const color = isCollege ? '#B91C1C' : '#CBD5E1';
   const isPending = !event.isPublished;
 
@@ -82,7 +84,7 @@ const createEventIcon = (event: CampusEvent) => {
         border: 2px solid #ffffff;
       ">
         <div style="transform: rotate(45deg); color: white; font-size: 13px; font-weight: bold;">
-          ${isCollege ? '🏛️' : '🎉'}
+          ${CATEGORY_EMOJI[event.category]}
         </div>
         ${
           isPending
@@ -182,6 +184,14 @@ export const MapView: React.FC = () => {
                     </span>
                     <span className="text-[11px] font-semibold text-red-400 flex items-center gap-1">
                       <MapPin className="w-3 h-3" /> {event.distanceMiles} mi away
+                    </span>
+                  </div>
+
+                  {/* Category, with its emoji so the event type reads at a glance */}
+                  <div className="mb-2">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-white/10 text-zinc-200 border border-white/20">
+                      <span aria-hidden="true">{CATEGORY_EMOJI[event.category]}</span>
+                      {event.category}
                     </span>
                   </div>
 
@@ -306,15 +316,19 @@ export const MapView: React.FC = () => {
           <div className="font-bold text-white text-[11px] uppercase tracking-wider">Map Legend</div>
           <div className="flex items-center gap-2 text-zinc-300">
             <span className="w-3 h-3 rounded-full bg-red-700 inline-block" />
-            <span>🏛️ College-Run Event</span>
+            <span>College-Run Event</span>
           </div>
           <div className="flex items-center gap-2 text-zinc-300">
             <span className="w-3 h-3 rounded-full bg-zinc-300 inline-block" />
-            <span>🎉 Student-Run Event</span>
+            <span>Student-Run Event</span>
           </div>
           <div className="flex items-center gap-2 text-zinc-300">
             <span className="w-2.5 h-2.5 rounded-full border border-red-400 inline-block" />
             <span>Campus Building</span>
+          </div>
+
+          <div className="pt-1.5 mt-1.5 border-t border-zinc-700/60 text-[10px] text-zinc-500">
+            Pin emoji shows the event category
           </div>
         </div>
       </div>
